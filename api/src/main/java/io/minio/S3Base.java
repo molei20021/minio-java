@@ -137,6 +137,7 @@ public abstract class S3Base {
   private boolean isDualStackHost;
   private boolean useVirtualStyle;
   private OkHttpClient httpClient;
+  private Multimap<String, String> headers;
 
   protected S3Base(
       HttpUrl baseUrl,
@@ -147,7 +148,8 @@ public abstract class S3Base {
       boolean isDualStackHost,
       boolean useVirtualStyle,
       Provider provider,
-      OkHttpClient httpClient) {
+      OkHttpClient httpClient,
+      Multimap<String, String> headers) {
     this.baseUrl = baseUrl;
     this.region = region;
     this.isAwsHost = isAwsHost;
@@ -157,6 +159,7 @@ public abstract class S3Base {
     this.useVirtualStyle = useVirtualStyle;
     this.provider = provider;
     this.httpClient = httpClient;
+    this.headers = headers;
   }
 
   protected S3Base(S3Base client) {
@@ -169,6 +172,7 @@ public abstract class S3Base {
     this.useVirtualStyle = client.useVirtualStyle;
     this.provider = client.provider;
     this.httpClient = client.httpClient;
+    this.headers = client.headers;
   }
 
   /** Check whether argument is valid or not. */
@@ -722,6 +726,8 @@ public abstract class S3Base {
       objectName = null;
     }
 
+    Multimap<String, String> headersAll = merge(headers, this.headers);
+
     return getRegionAsync(bucketName, region)
         .thenCompose(
             location -> {
@@ -731,7 +737,7 @@ public abstract class S3Base {
                     bucketName,
                     objectName,
                     location,
-                    httpHeaders(merge(args.extraHeaders(), headers)),
+                    httpHeaders(merge(args.extraHeaders(), headersAll)),
                     merge(args.extraQueryParams(), queryParams),
                     body,
                     length);

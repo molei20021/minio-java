@@ -138,7 +138,8 @@ public class MinioAsyncClient extends S3Base {
       boolean isDualStackHost,
       boolean useVirtualStyle,
       Provider provider,
-      OkHttpClient httpClient) {
+      OkHttpClient httpClient,
+      Multimap<String, String> headers) {
     super(
         baseUrl,
         region,
@@ -148,7 +149,8 @@ public class MinioAsyncClient extends S3Base {
         isDualStackHost,
         useVirtualStyle,
         provider,
-        httpClient);
+        httpClient,
+        headers);
   }
 
   protected MinioAsyncClient(MinioAsyncClient client) {
@@ -3224,6 +3226,7 @@ public class MinioAsyncClient extends S3Base {
 
     private boolean isAwsChinaHost;
     private String regionInUrl;
+    private Multimap<String, String> headers;
 
     private boolean isAwsFipsEndpoint(String endpoint) {
       return endpoint.startsWith("s3-fips.");
@@ -3331,6 +3334,11 @@ public class MinioAsyncClient extends S3Base {
       return this;
     }
 
+    public Builder headers(Multimap<String, String> headers) {
+      this.headers = headers;
+      return this;
+    }
+
     public Builder credentials(String accessKey, String secretKey) {
       this.provider = new StaticProvider(accessKey, secretKey, null);
       return this;
@@ -3370,7 +3378,8 @@ public class MinioAsyncClient extends S3Base {
           isDualStackHost,
           useVirtualStyle,
           provider,
-          httpClient);
+          httpClient,
+          headers);
     }
   }
 }
