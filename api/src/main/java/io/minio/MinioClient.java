@@ -17,6 +17,7 @@
 
 package io.minio;
 
+import com.google.common.collect.Multimap;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.minio.credentials.Provider;
 import io.minio.errors.BucketPolicyTooLargeException;
@@ -2469,6 +2470,11 @@ public class MinioClient {
 
     public Builder region(String region) {
       asyncClientBuilder.region(region);
+      return this;
+    }
+
+    public Builder headers(Multimap<String, String> headers) {
+      asyncClientBuilder.headers(headers);
       return this;
     }
 

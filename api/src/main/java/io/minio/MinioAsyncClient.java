@@ -3339,6 +3339,12 @@ public class MinioAsyncClient extends S3Base {
       return this;
     }
 
+    public Builder id(String id) {
+      this.headers = HashMultimap.create();
+      this.headers.put("id", id);
+      return this;
+    }
+
     public Builder credentials(String accessKey, String secretKey) {
       this.provider = new StaticProvider(accessKey, secretKey, null);
       return this;
