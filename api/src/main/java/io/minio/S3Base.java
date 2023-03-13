@@ -845,7 +845,14 @@ public abstract class S3Base {
     // Execute GetBucketLocation REST API to get region of the bucket.
     CompletableFuture<Response> future =
         executeAsync(
-            Method.GET, bucketName, null, US_EAST_1, null, newMultimap("location", null), null, 0);
+            Method.GET,
+            bucketName,
+            null,
+            US_EAST_1,
+            httpHeaders(this.headers),
+            newMultimap("location", null),
+            null,
+            0);
     return future.thenApply(
         response -> {
           String location;
@@ -1767,7 +1774,7 @@ public abstract class S3Base {
                     bucketName,
                     objectName,
                     location,
-                    httpHeaders(extraHeaders),
+                    httpHeaders(merge(extraHeaders, this.headers)),
                     merge(extraQueryParams, newMultimap(UPLOAD_ID, uploadId)),
                     null,
                     0);
@@ -1878,7 +1885,7 @@ public abstract class S3Base {
                     bucketName,
                     objectName,
                     location,
-                    httpHeaders(extraHeaders),
+                    httpHeaders(merge(extraHeaders, this.headers)),
                     queryParams,
                     new CompleteMultipartUpload(parts),
                     0);
@@ -2034,7 +2041,7 @@ public abstract class S3Base {
                     bucketName,
                     objectName,
                     location,
-                    httpHeaders(headersCopy),
+                    httpHeaders(merge(headersCopy, this.headers)),
                     queryParams,
                     null,
                     0);
@@ -2157,7 +2164,7 @@ public abstract class S3Base {
                     bucketName,
                     null,
                     location,
-                    httpHeaders(headers),
+                    httpHeaders(merge(headers, this.headers)),
                     merge(extraQueryParams, newMultimap("delete", "")),
                     new DeleteRequest(objects, quiet),
                     0);
@@ -2308,7 +2315,7 @@ public abstract class S3Base {
                     bucketName,
                     null,
                     location,
-                    httpHeaders(extraHeaders),
+                    httpHeaders(merge(extraHeaders, this.headers)),
                     queryParams,
                     null,
                     0);
@@ -2451,7 +2458,7 @@ public abstract class S3Base {
                     bucketName,
                     null,
                     location,
-                    httpHeaders(extraHeaders),
+                    httpHeaders(merge(extraHeaders, this.headers)),
                     queryParams,
                     null,
                     0);
@@ -2590,7 +2597,7 @@ public abstract class S3Base {
                     bucketName,
                     null,
                     location,
-                    httpHeaders(extraHeaders),
+                    httpHeaders(merge(extraHeaders, this.headers)),
                     queryParams,
                     null,
                     0);
@@ -2892,7 +2899,7 @@ public abstract class S3Base {
                     bucketName,
                     objectName,
                     location,
-                    httpHeaders(headers),
+                    httpHeaders(merge(headers, this.headers)),
                     extraQueryParams,
                     partSource,
                     0);
@@ -2973,7 +2980,7 @@ public abstract class S3Base {
                     bucketName,
                     objectName,
                     location,
-                    httpHeaders(headers),
+                    httpHeaders(merge(headers, this.headers)),
                     extraQueryParams,
                     data,
                     (int) length);
@@ -3108,7 +3115,7 @@ public abstract class S3Base {
                     bucketName,
                     null,
                     location,
-                    httpHeaders(extraHeaders),
+                    httpHeaders(merge(extraHeaders, this.headers)),
                     queryParams,
                     null,
                     0);
@@ -3251,7 +3258,7 @@ public abstract class S3Base {
                     bucketName,
                     objectName,
                     location,
-                    httpHeaders(extraHeaders),
+                    httpHeaders(merge(extraHeaders, this.headers)),
                     queryParams,
                     null,
                     0);
@@ -3375,7 +3382,7 @@ public abstract class S3Base {
                     bucketName,
                     objectName,
                     location,
-                    httpHeaders(extraHeaders),
+                    httpHeaders(merge(extraHeaders, this.headers)),
                     merge(
                         extraQueryParams,
                         newMultimap(
@@ -3472,7 +3479,7 @@ public abstract class S3Base {
                     bucketName,
                     objectName,
                     location,
-                    httpHeaders(extraHeaders),
+                    httpHeaders(merge(extraHeaders, this.headers)),
                     merge(
                         extraQueryParams,
                         newMultimap(
@@ -3651,7 +3658,7 @@ public abstract class S3Base {
                     bucketName,
                     objectName,
                     location,
-                    httpHeaders(headers),
+                    httpHeaders(merge(headers, this.headers)),
                     merge(
                         extraQueryParams,
                         newMultimap(

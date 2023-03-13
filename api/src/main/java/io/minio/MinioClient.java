@@ -2478,6 +2478,11 @@ public class MinioClient {
       return this;
     }
 
+    public Builder id(String id) {
+      asyncClientBuilder.id(id);
+      return this;
+    }
+
     public Builder credentials(String accessKey, String secretKey) {
       asyncClientBuilder.credentials(accessKey, secretKey);
       return this;
